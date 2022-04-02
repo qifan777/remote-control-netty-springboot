@@ -1,0 +1,5 @@
+remote:
+  server:
+    port: 7877
+    host: '127.0.0.1'
+    id: '起凡'
