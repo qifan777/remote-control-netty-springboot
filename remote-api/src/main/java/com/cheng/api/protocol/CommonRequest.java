@@ -3,15 +3,14 @@ package com.cheng.api.protocol;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 @Data
 public abstract class CommonRequest implements Serializable {
-    private final static Map<Byte, Class<? extends CommonRequest>> map = new HashMap<>();
     private String command;
     String friendId;
     String userId;
+    String requestId;
+//    private final static Map<Byte, Class<? extends CommonRequest>> map = new HashMap<>();
 //    static {
 //        String packageName = Command.class.getPackageName();
 //        File file = new File(Command.class.getResource(".").getPath());
@@ -22,9 +21,9 @@ public abstract class CommonRequest implements Serializable {
 //        }
 //    }
 
-    public static Class<? extends CommonRequest> getType(Byte b) {
-        return map.get(b);
-    }
+//    public static Class<? extends CommonRequest> getType(Byte b) {
+//        return map.get(b);
+//    }
 
 //    public static void scanFiles(File file, StringBuilder packagePath) throws ClassNotFoundException {
 //        File[] files = file.listFiles();

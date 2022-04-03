@@ -3,7 +3,6 @@ package com.cheng.server.handler;
 import com.cheng.api.handler.MyHandler;
 import com.cheng.api.protocol.CommonRequest;
 import com.cheng.server.config.RegistryCenter;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -22,6 +21,8 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
     Map<String, MyHandler> handlerMap;
     @Autowired
     RegistryCenter registryCenter;
+    @Autowired
+    DefaultHandler defaultHandler;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -37,12 +38,7 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
             serverHandler.handler(msg, ctx);
             return;
         }
-        log.info(commonRequest.getUserId() + "发送给" + commonRequest.getFriendId() + "," + commonRequest.getCommand());
-        String friendChannelId = registryCenter.getUserChannelId(commonRequest.getFriendId());
-        Channel channel = registryCenter.getUserChannel(friendChannelId);
-        if (channel != null) {
-            channel.writeAndFlush(msg);
-        }
+        defaultHandler.handler(msg, ctx);
     }
 
     @Override

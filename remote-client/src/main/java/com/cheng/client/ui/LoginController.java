@@ -1,8 +1,11 @@
 package com.cheng.client.ui;
 
+import com.cheng.api.protocol.CommonRequest;
+import com.cheng.api.protocol.CommonResponse;
 import com.cheng.api.protocol.client.connection.ConnectRequest;
 import com.cheng.client.config.ClientInfo;
 import com.cheng.client.netty.NettyClient;
+import com.cheng.client.sync.SyncWrite;
 import com.cheng.client.ui.view.ControlView;
 import io.netty.channel.Channel;
 import javafx.fxml.FXML;
@@ -22,7 +25,8 @@ public class LoginController {
     TextField textField;
     @Autowired
     public ClientInfo clientInfo;
-
+    @Autowired
+    SyncWrite<CommonResponse, CommonRequest> syncWrite;
 
     public LoginController() {
     }
@@ -32,7 +36,7 @@ public class LoginController {
         log.info("loginController初始化");
     }
 
-    public void connect() {
+    public void connect() throws Throwable {
         NettyClient client = getClient();
         Channel channel = client.channel;
         log.info("连接" + textField.getCharacters().toString());
@@ -40,8 +44,11 @@ public class LoginController {
         ConnectRequest connectRequest = new ConnectRequest();
         connectRequest.setFriendId(clientInfo.getFriendId());
         connectRequest.setUserId(clientInfo.getUserId());
-        channel.writeAndFlush(connectRequest);
-        UISetup.staticStage.setScene(getControlView().getScene());
+        CommonResponse response = syncWrite.write(channel, connectRequest, 10000);
+        if (response != null && response.getIsSuccess()) {
+            UISetup.staticStage.setScene(getControlView().getScene());
+        }
+
     }
 
     @Lookup

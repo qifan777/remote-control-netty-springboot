@@ -33,5 +33,12 @@ public class RegistryCenter {
 
     public String getUserChannelId(String userId) {
         return userIdChannelId.get(userId);
+
+    }
+
+    public Channel getUserChannelFromUserId(String userId) {
+        String channelId = userIdChannelId.get(userId);
+        if (channelId == null) return null;
+        return userChannel.get(channelId);
     }
 }

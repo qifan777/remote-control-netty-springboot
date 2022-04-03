@@ -2,6 +2,7 @@ package com.cheng.client.netty.handler;
 
 import com.cheng.api.handler.MyHandler;
 import com.cheng.api.protocol.CommonRequest;
+import com.cheng.api.protocol.CommonResponse;
 import com.cheng.api.protocol.client.registry.RegistryRequest;
 import com.cheng.client.config.ClientInfo;
 import io.netty.channel.ChannelHandler;
@@ -22,6 +23,8 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
     Map<String, MyHandler> handlers;
     @Autowired
     ClientInfo clientInfo;
+    @Autowired
+    ResponseHandler responseHandler;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -34,6 +37,12 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        if (msg instanceof CommonResponse) {
+            CommonResponse response = (CommonResponse) msg;
+            log.info("收到响应" + response.getCommand());
+            responseHandler.handler(msg, ctx);
+            return;
+        }
         CommonRequest commonRequest = (CommonRequest) msg;
         MyHandler myHandler = handlers.get(commonRequest.getCommand());
         log.info("收到消息" + commonRequest.getCommand());
