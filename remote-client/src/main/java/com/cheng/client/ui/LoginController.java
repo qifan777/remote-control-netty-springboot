@@ -25,6 +25,8 @@ public class LoginController {
     TextField textField;
     @Autowired
     public ClientInfo clientInfo;
+    @FXML
+    TextField userId;
     @Autowired
     SyncWrite<CommonResponse, CommonRequest> syncWrite;
 
@@ -34,6 +36,7 @@ public class LoginController {
     @FXML
     public void initialize() {
         log.info("loginController初始化");
+        userId.setText(clientInfo.getUserId());
     }
 
     public void connect() throws Throwable {

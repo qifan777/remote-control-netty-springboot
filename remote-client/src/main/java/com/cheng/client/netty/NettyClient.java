@@ -1,5 +1,6 @@
 package com.cheng.client.netty;
 
+import com.cheng.api.protocol.client.connection.DisConnectRequest;
 import com.cheng.client.config.ClientInfo;
 import com.cheng.client.netty.handler.MyChannelInitializer;
 import io.netty.bootstrap.Bootstrap;
@@ -55,10 +56,13 @@ public class NettyClient implements CommandLineRunner, DisposableBean {
     }
 
 
-
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
         log.info("关闭netty");
+        DisConnectRequest disConnectRequest = new DisConnectRequest();
+        disConnectRequest.setUserId(clientInfo.getUserId());
+        disConnectRequest.setFriendId(clientInfo.getFriendId());
+        channel.writeAndFlush(disConnectRequest);
         executorService.shutdown();
         workGroup.shutdownGracefully();
     }

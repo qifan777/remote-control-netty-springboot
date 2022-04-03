@@ -50,7 +50,6 @@ public class ControlController {
     public void initialize() {
         log.info("ControlController初始化");
         imageView.setOnMousePressed(mouseEvent -> {
-            log.info("发送单击事件");
             MousePressRequest mousePressRequest = new MousePressRequest();
             mousePressRequest.setBtn(JavaFXToAWTAdaptor.findMouseInAWT(mouseEvent.getButton()));
             mousePressRequest.setFriendId(clientInfo.getFriendId());
@@ -81,7 +80,6 @@ public class ControlController {
             getClient().channel.writeAndFlush(mouseReleaseRequest);
         });
         imageView.setOnScroll(scrollEvent -> {
-            System.out.println(scrollEvent.toString());
             MouseWheelRequest mouseWheelRequest = new MouseWheelRequest();
             //deltaY大于0则是代表向上 小于则是向下
             mouseWheelRequest.setDirection(scrollEvent.getDeltaY() < 0);
@@ -126,7 +124,6 @@ public class ControlController {
         disConnectRequest.setFriendId(clientInfo.getFriendId());
         getClient().channel.writeAndFlush(disConnectRequest);
         //回到登录页面
-        log.info(getLoginView().toString());
         UISetup.staticStage.setScene(getLoginView().getScene());
         UISetup.staticStage.show();
     }

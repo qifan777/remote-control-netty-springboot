@@ -42,8 +42,7 @@ public class ConnectHandler implements MyHandler {
                     screenRequest.setUserId(connectRequest.getFriendId());
                     screenRequest.setFriendId(connectRequest.getUserId());
                     handlerContext.writeAndFlush(screenRequest);
-                    log.info("发送图片");
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }

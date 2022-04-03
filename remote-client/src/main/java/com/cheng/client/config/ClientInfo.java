@@ -1,5 +1,6 @@
 package com.cheng.client.config;
 
+import cn.hutool.core.util.RandomUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,10 @@ public class ClientInfo {
     Integer port;
     @Value("${remote.server.host}")
     String host;
-    @Value("${remote.server.id}")
     String userId;
     String friendId;
+
+    public ClientInfo() {
+        this.userId = RandomUtil.randomString(10);
+    }
 }
