@@ -2,7 +2,6 @@ package com.cheng.api.protocol;
 
 import lombok.Data;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;

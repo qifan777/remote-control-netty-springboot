@@ -5,7 +5,6 @@ import com.cheng.api.protocol.Command;
 import com.cheng.client.ui.UISetup;
 import com.cheng.client.ui.view.LoginView;
 import io.netty.channel.ChannelHandlerContext;
-import javafx.scene.Scene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

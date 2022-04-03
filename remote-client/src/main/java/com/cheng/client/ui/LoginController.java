@@ -6,7 +6,6 @@ import com.cheng.client.netty.NettyClient;
 import com.cheng.client.ui.view.ControlView;
 import io.netty.channel.Channel;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;

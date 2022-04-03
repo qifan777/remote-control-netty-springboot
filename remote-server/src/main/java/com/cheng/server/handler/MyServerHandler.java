@@ -1,23 +1,17 @@
 package com.cheng.server.handler;
 
 import com.cheng.api.handler.MyHandler;
-import com.cheng.api.protocol.Command;
 import com.cheng.api.protocol.CommonRequest;
 import com.cheng.server.config.RegistryCenter;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @ChannelHandler.Sharable

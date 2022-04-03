@@ -1,7 +1,6 @@
 package com.cheng.client.config;
 
 import com.cheng.client.ui.view.AbstractView;
-import com.cheng.client.utils.SpringBeanFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import org.springframework.beans.BeansException;

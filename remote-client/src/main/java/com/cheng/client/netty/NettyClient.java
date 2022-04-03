@@ -8,6 +8,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,8 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.ExecutorService;
 
 @Component
-public class NettyClient implements CommandLineRunner {
+@Slf4j
+public class NettyClient implements CommandLineRunner, DisposableBean {
     @Autowired
     MyChannelInitializer channelInitializer;
     @Autowired
@@ -49,5 +52,14 @@ public class NettyClient implements CommandLineRunner {
     public void run(String... args) throws Exception {
         executorService.submit(() -> connect(clientInfo.getHost(), clientInfo.getPort()));
 
+    }
+
+
+
+    @Override
+    public void destroy() throws Exception {
+        log.info("关闭netty");
+        executorService.shutdown();
+        workGroup.shutdownGracefully();
     }
 }

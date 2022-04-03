@@ -1,16 +1,20 @@
 package com.cheng.client.ui;
 
 import com.cheng.api.protocol.client.connection.DisConnectRequest;
-import com.cheng.api.protocol.client.mouse.*;
+import com.cheng.api.protocol.client.keyboard.KeyPressRequest;
+import com.cheng.api.protocol.client.keyboard.KeyReleaseRequest;
+import com.cheng.api.protocol.client.mouse.MouseMoveRequest;
+import com.cheng.api.protocol.client.mouse.MousePressRequest;
+import com.cheng.api.protocol.client.mouse.MouseReleaseRequest;
+import com.cheng.api.protocol.client.mouse.MouseWheelRequest;
 import com.cheng.client.config.ClientInfo;
 import com.cheng.client.netty.NettyClient;
 import com.cheng.client.ui.view.LoginView;
+import com.cheng.client.utils.JavaFXToAWTAdaptor;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @Component
 @Slf4j
@@ -36,19 +34,16 @@ public class ControlController {
     public ImageView imageView;
     @FXML
     public HBox topHBox;
+    @FXML
+    public Button hiddenButton;
     @Autowired
     Robot robot;
     @Autowired
     public ClientInfo clientInfo;
 
 
-    Map<MouseButton, Integer> javaFxMouseToRobot = new HashMap<>();
-
     public ControlController() {
-        javaFxMouseToRobot.put(MouseButton.PRIMARY, InputEvent.BUTTON1_DOWN_MASK);
-        javaFxMouseToRobot.put(MouseButton.MIDDLE, InputEvent.BUTTON2_DOWN_MASK);
-        javaFxMouseToRobot.put(MouseButton.SECONDARY, InputEvent.BUTTON3_DOWN_MASK);
-        System.out.println("Control实例化");
+
     }
 
     @FXML
@@ -57,7 +52,7 @@ public class ControlController {
         imageView.setOnMousePressed(mouseEvent -> {
             log.info("发送单击事件");
             MousePressRequest mousePressRequest = new MousePressRequest();
-            mousePressRequest.setBtn(javaFxMouseToRobot.get(mouseEvent.getButton()));
+            mousePressRequest.setBtn(JavaFXToAWTAdaptor.findMouseInAWT(mouseEvent.getButton()));
             mousePressRequest.setFriendId(clientInfo.getFriendId());
             mousePressRequest.setUserId(clientInfo.getUserId());
             getClient().channel.writeAndFlush(mousePressRequest);
@@ -80,7 +75,7 @@ public class ControlController {
         imageView.setOnMouseReleased(mouseEvent -> {
             MouseReleaseRequest mouseReleaseRequest = new MouseReleaseRequest();
             // robot的鼠标定义和javaFx的鼠标定义不一样，需要用适配器模式
-            mouseReleaseRequest.setBtn(javaFxMouseToRobot.get(mouseEvent.getButton()));
+            mouseReleaseRequest.setBtn(JavaFXToAWTAdaptor.findMouseInAWT(mouseEvent.getButton()));
             mouseReleaseRequest.setFriendId(clientInfo.getFriendId());
             mouseReleaseRequest.setUserId(clientInfo.getUserId());
             getClient().channel.writeAndFlush(mouseReleaseRequest);
@@ -94,11 +89,33 @@ public class ControlController {
             mouseWheelRequest.setUserId(clientInfo.getUserId());
             getClient().channel.writeAndFlush(mouseWheelRequest);
         });
-        imageView.setOnKeyPressed(keyEvent -> {
-            log.info(keyEvent.toString());
+        topHBox.setOnKeyPressed(keyEvent -> {
+            try {
+                //反射获取按键在KeyEvent中对应的编号
+                int keyInAWT = JavaFXToAWTAdaptor.findKeyInAWT(keyEvent.getCode());
+                if (keyInAWT < 0) return;
+                KeyPressRequest keyPressRequest = new KeyPressRequest();
+                keyPressRequest.setKeyCode(keyInAWT);
+                keyPressRequest.setFriendId(clientInfo.getFriendId());
+                keyPressRequest.setUserId(clientInfo.getUserId());
+                getClient().channel.writeAndFlush(keyPressRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
-        imageView.setOnKeyReleased(keyEvent -> {
-            log.info(keyEvent.toString());
+        topHBox.setOnKeyReleased(keyEvent -> {
+            try {
+                //反射获取按键在KeyEvent中对应的编号
+                int keyInAWT = JavaFXToAWTAdaptor.findKeyInAWT(keyEvent.getCode());
+                if (keyInAWT < 0) return;
+                KeyReleaseRequest keyReleaseRequest = new KeyReleaseRequest();
+                keyReleaseRequest.setKeyCode(keyInAWT);
+                keyReleaseRequest.setFriendId(clientInfo.getFriendId());
+                keyReleaseRequest.setUserId(clientInfo.getUserId());
+                getClient().channel.writeAndFlush(keyReleaseRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
