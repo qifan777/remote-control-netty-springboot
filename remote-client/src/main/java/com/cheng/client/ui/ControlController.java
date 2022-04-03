@@ -11,10 +11,13 @@ import com.cheng.client.config.ClientInfo;
 import com.cheng.client.netty.NettyClient;
 import com.cheng.client.ui.view.LoginView;
 import com.cheng.client.utils.JavaFXToAWTAdaptor;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +38,8 @@ public class ControlController {
     @FXML
     public HBox topHBox;
     @FXML
+    public Button disconnectBtn;
+    @FXML
     public Button hiddenButton;
     @Autowired
     Robot robot;
@@ -49,6 +54,44 @@ public class ControlController {
     @FXML
     public void initialize() {
         log.info("ControlController初始化");
+        disconnectBtn.setFocusTraversable(false);
+        hiddenButton.setFocusTraversable(true);
+        hiddenButton.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                try {
+                    log.info(keyEvent.toString());
+//                kcpmzxv9mt
+                    //反射获取按键在KeyEvent中对应的编号
+                    int keyInAWT = JavaFXToAWTAdaptor.findKeyInAWT(keyEvent.getCode());
+                    if (keyInAWT < 0) return;
+                    KeyPressRequest keyPressRequest = new KeyPressRequest();
+                    keyPressRequest.setKeyCode(keyInAWT);
+                    keyPressRequest.setFriendId(clientInfo.getFriendId());
+                    keyPressRequest.setUserId(clientInfo.getUserId());
+                    getClient().channel.writeAndFlush(keyPressRequest);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        hiddenButton.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                try {
+                    //反射获取按键在KeyEvent中对应的编号
+                    int keyInAWT = JavaFXToAWTAdaptor.findKeyInAWT(keyEvent.getCode());
+                    if (keyInAWT < 0) return;
+                    KeyReleaseRequest keyReleaseRequest = new KeyReleaseRequest();
+                    keyReleaseRequest.setKeyCode(keyInAWT);
+                    keyReleaseRequest.setFriendId(clientInfo.getFriendId());
+                    keyReleaseRequest.setUserId(clientInfo.getUserId());
+                    getClient().channel.writeAndFlush(keyReleaseRequest);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         imageView.setOnMousePressed(mouseEvent -> {
             MousePressRequest mousePressRequest = new MousePressRequest();
             mousePressRequest.setBtn(JavaFXToAWTAdaptor.findMouseInAWT(mouseEvent.getButton()));
@@ -87,34 +130,18 @@ public class ControlController {
             mouseWheelRequest.setUserId(clientInfo.getUserId());
             getClient().channel.writeAndFlush(mouseWheelRequest);
         });
-        topHBox.setOnKeyPressed(keyEvent -> {
-            try {
-                //反射获取按键在KeyEvent中对应的编号
-                int keyInAWT = JavaFXToAWTAdaptor.findKeyInAWT(keyEvent.getCode());
-                if (keyInAWT < 0) return;
-                KeyPressRequest keyPressRequest = new KeyPressRequest();
-                keyPressRequest.setKeyCode(keyInAWT);
-                keyPressRequest.setFriendId(clientInfo.getFriendId());
-                keyPressRequest.setUserId(clientInfo.getUserId());
-                getClient().channel.writeAndFlush(keyPressRequest);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        vBox.setOnKeyPressed(keyEvent -> {
+
         });
-        topHBox.setOnKeyReleased(keyEvent -> {
-            try {
-                //反射获取按键在KeyEvent中对应的编号
-                int keyInAWT = JavaFXToAWTAdaptor.findKeyInAWT(keyEvent.getCode());
-                if (keyInAWT < 0) return;
-                KeyReleaseRequest keyReleaseRequest = new KeyReleaseRequest();
-                keyReleaseRequest.setKeyCode(keyInAWT);
-                keyReleaseRequest.setFriendId(clientInfo.getFriendId());
-                keyReleaseRequest.setUserId(clientInfo.getUserId());
-                getClient().channel.writeAndFlush(keyReleaseRequest);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        vBox.setOnKeyReleased(keyEvent -> {
+
         });
+    }
+
+    @FXML
+    protected void onHiddenAction(ActionEvent actionEvent) {
+        log.info(actionEvent.toString());
+        log.info("ddd");
     }
 
     @FXML
@@ -127,6 +154,7 @@ public class ControlController {
         UISetup.staticStage.setScene(getLoginView().getScene());
         UISetup.staticStage.show();
     }
+
 
     @Lookup
     public NettyClient getClient() {

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+
 <VBox fx:id="vBox" alignment="TOP_RIGHT" prefHeight="867.0" prefWidth="1309.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cheng.client.ui.ControlController">
    <children>
       <HBox fx:id="topHBox" alignment="CENTER" prefHeight="749.0" prefWidth="1269.0">
@@ -17,7 +22,7 @@
       </HBox>
       <HBox alignment="CENTER">
          <children>
-            <Button onAction="#onDisConnectButton" text="中断控制" />
+            <Button fx:id="disconnectBtn" onAction="#onDisConnectButton" text="中断控制" />
          </children>
          <opaqueInsets>
             <Insets />
@@ -26,6 +31,7 @@
             <Insets top="40.0" />
          </VBox.margin>
       </HBox>
+      <Button mnemonicParsing="false" opacity="0.0" text="Button" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
