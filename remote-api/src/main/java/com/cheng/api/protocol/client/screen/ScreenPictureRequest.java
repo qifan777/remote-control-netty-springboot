@@ -1,4 +1,4 @@
-package com.cheng.api.protocol.screen;
+package com.cheng.api.protocol.client.screen;
 
 import com.cheng.api.protocol.Command;
 import com.cheng.api.protocol.CommonRequest;

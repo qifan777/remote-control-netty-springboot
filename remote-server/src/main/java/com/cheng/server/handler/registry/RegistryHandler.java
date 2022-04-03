@@ -2,7 +2,7 @@ package com.cheng.server.handler.registry;
 
 import com.cheng.api.handler.MyHandler;
 import com.cheng.api.protocol.Command;
-import com.cheng.api.protocol.registry.RegistryRequest;
+import com.cheng.api.protocol.client.registry.RegistryRequest;
 import com.cheng.server.config.RegistryCenter;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;

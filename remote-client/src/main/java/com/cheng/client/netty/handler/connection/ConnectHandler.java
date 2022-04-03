@@ -1,9 +1,9 @@
-package com.cheng.client.netty.handler.connect;
+package com.cheng.client.netty.handler.connection;
 
 import com.cheng.api.handler.MyHandler;
 import com.cheng.api.protocol.Command;
-import com.cheng.api.protocol.connect.ConnectRequest;
-import com.cheng.api.protocol.screen.ScreenPictureRequest;
+import com.cheng.api.protocol.client.connection.ConnectRequest;
+import com.cheng.api.protocol.client.screen.ScreenPictureRequest;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

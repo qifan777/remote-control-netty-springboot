@@ -49,7 +49,7 @@ public class UISetup extends Application {
         staticStage = stage;
         ConfigurableApplicationContext applicationContext = springApplication.run(runArgs);
         LoginView bean = applicationContext.getBean(LoginView.class);
-        stage.setScene(new Scene(bean.getXmlView()));
+        stage.setScene(bean.getScene());
         stage.show();
     }
 

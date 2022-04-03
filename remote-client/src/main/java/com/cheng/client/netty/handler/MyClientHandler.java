@@ -2,7 +2,7 @@ package com.cheng.client.netty.handler;
 
 import com.cheng.api.handler.MyHandler;
 import com.cheng.api.protocol.CommonRequest;
-import com.cheng.api.protocol.registry.RegistryRequest;
+import com.cheng.api.protocol.client.registry.RegistryRequest;
 import com.cheng.client.config.ClientInfo;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

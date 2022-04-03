@@ -1,4 +1,4 @@
-package com.cheng.api.protocol.connect;
+package com.cheng.api.protocol.client.connection;
 
 import com.cheng.api.protocol.Command;
 import com.cheng.api.protocol.CommonRequest;

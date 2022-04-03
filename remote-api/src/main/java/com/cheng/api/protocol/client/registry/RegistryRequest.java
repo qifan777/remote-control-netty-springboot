@@ -1,4 +1,4 @@
-package com.cheng.api.protocol.registry;
+package com.cheng.api.protocol.client.registry;
 
 import com.cheng.api.protocol.Command;
 import com.cheng.api.protocol.CommonRequest;

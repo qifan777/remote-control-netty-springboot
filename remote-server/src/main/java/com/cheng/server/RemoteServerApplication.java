@@ -1,6 +1,6 @@
 package com.cheng.server;
 
-import com.cheng.api.protocol.registry.RegistryRequest;
+import com.cheng.api.protocol.client.registry.RegistryRequest;
 import com.cheng.server.handler.MyChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;

@@ -18,7 +18,7 @@
       </HBox>
       <HBox alignment="CENTER">
          <children>
-            <Button onAction="#onHelloButtonClick" text="Button" />
+            <Button onAction="#onDisConnectButton" text="中断控制" />
          </children>
          <opaqueInsets>
             <Insets />

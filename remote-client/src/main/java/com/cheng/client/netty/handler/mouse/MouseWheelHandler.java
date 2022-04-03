@@ -2,7 +2,7 @@ package com.cheng.client.netty.handler.mouse;
 
 import com.cheng.api.handler.MyHandler;
 import com.cheng.api.protocol.Command;
-import com.cheng.api.protocol.mouse.MouseWheelRequest;
+import com.cheng.api.protocol.client.mouse.MouseWheelRequest;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

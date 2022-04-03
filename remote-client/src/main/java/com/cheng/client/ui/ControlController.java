@@ -1,14 +1,13 @@
 package com.cheng.client.ui;
 
-import com.cheng.api.protocol.mouse.*;
-import com.cheng.client.RemoteClientApplication;
+import com.cheng.api.protocol.client.connection.DisConnectRequest;
+import com.cheng.api.protocol.client.mouse.*;
 import com.cheng.client.config.ClientInfo;
 import com.cheng.client.netty.NettyClient;
-import com.cheng.client.utils.SpringBeanFactory;
-import io.netty.channel.Channel;
+import com.cheng.client.ui.view.LoginView;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -95,21 +94,33 @@ public class ControlController {
             mouseWheelRequest.setUserId(clientInfo.getUserId());
             getClient().channel.writeAndFlush(mouseWheelRequest);
         });
+        imageView.setOnKeyPressed(keyEvent -> {
+            log.info(keyEvent.toString());
+        });
+        imageView.setOnKeyReleased(keyEvent -> {
+            log.info(keyEvent.toString());
+        });
     }
 
     @FXML
-    protected void onHelloButtonClick() throws IOException {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        BufferedImage screenCapture = robot.createScreenCapture(new Rectangle(0, 0, screenSize.width, screenSize.height));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(screenCapture, "jpg", byteArrayOutputStream);
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        Image image = new Image(byteArrayInputStream);
-        imageView.setImage(image);
+    protected void onDisConnectButton() {
+        DisConnectRequest disConnectRequest = new DisConnectRequest();
+        disConnectRequest.setUserId(clientInfo.getUserId());
+        disConnectRequest.setFriendId(clientInfo.getFriendId());
+        getClient().channel.writeAndFlush(disConnectRequest);
+        //回到登录页面
+        log.info(getLoginView().toString());
+        UISetup.staticStage.setScene(getLoginView().getScene());
+        UISetup.staticStage.show();
     }
 
     @Lookup
     public NettyClient getClient() {
+        return null;
+    }
+
+    @Lookup
+    public LoginView getLoginView() {
         return null;
     }
 

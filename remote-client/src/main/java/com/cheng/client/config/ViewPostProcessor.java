@@ -3,6 +3,7 @@ package com.cheng.client.config;
 import com.cheng.client.ui.view.AbstractView;
 import com.cheng.client.utils.SpringBeanFactory;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +25,7 @@ public class ViewPostProcessor implements BeanPostProcessor, ApplicationContextA
             fxmlLoader.setControllerFactory(this::controllerFactory);
             try {
                 AbstractView abstractView = (AbstractView) bean;
-                abstractView.setXmlView(fxmlLoader.load());
+                abstractView.setScene(new Scene(fxmlLoader.load()));
             } catch (IOException e) {
                 e.printStackTrace();
             }

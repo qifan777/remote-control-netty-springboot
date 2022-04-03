@@ -14,7 +14,7 @@ public class MyChannelInitializer extends ChannelInitializer<SocketChannel> {
     MyClientHandler clientHandler;
 
     @Override
-    protected void initChannel(SocketChannel channel) throws Exception {
+    protected void initChannel(SocketChannel channel) {
         channel.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 0))
                 .addLast(new ObjDecoder())
                 .addLast(new ObjEncoder())

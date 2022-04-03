@@ -2,7 +2,7 @@ package com.cheng.client.netty.handler.screen;
 
 import com.cheng.api.handler.MyHandler;
 import com.cheng.api.protocol.Command;
-import com.cheng.api.protocol.screen.ScreenPictureRequest;
+import com.cheng.api.protocol.client.screen.ScreenPictureRequest;
 import com.cheng.client.ui.ControlController;
 import io.netty.channel.ChannelHandlerContext;
 import javafx.scene.image.Image;

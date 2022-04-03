@@ -1,4 +1,4 @@
-package com.cheng.api.protocol.mouse;
+package com.cheng.api.protocol.client.mouse;
 
 import com.cheng.api.protocol.Command;
 import lombok.Data;

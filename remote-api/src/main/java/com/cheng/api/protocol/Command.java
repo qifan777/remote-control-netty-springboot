@@ -2,6 +2,7 @@ package com.cheng.api.protocol;
 
 public interface Command {
     public final String CONNECT = "connect";
+    public final String DISCONNECT = "disconnect";
     public final String SCREEN_PICTURE = "screenPicture";
     public final String MOUSE_MOVE = "mouseMove";
     public final String MOUSE_PRESS = "mousePress";
@@ -9,4 +10,5 @@ public interface Command {
     public final String MOUSE_WHEEL = "mouseWheel";
     public final String REGISTRY = "registry";
 
+    public final String CONNECT_RESPONSE = "connectResponse";
 }

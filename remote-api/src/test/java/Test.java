@@ -1,4 +1,4 @@
-import com.cheng.api.protocol.mouse.MouseReleaseRequest;
+import com.cheng.api.protocol.client.mouse.MouseReleaseRequest;
 
 import java.awt.*;
 
