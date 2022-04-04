@@ -1,0 +1,53 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor A
+participant 控制端A
+participant netty客户端A
+participant 服务端
+participant netty客户端B
+participant 控制端B
+actor B
+
+== 客户端A和客户端B向服务器注册 ==
+
+A -> 控制端A : 打开
+控制端A -> netty客户端A : 随机生成客户端id
+netty客户端A -> 服务端: 注册客户端A
+note left: 注册完之后别人就可以\n通过客户端id连接
+note right: 将客户端id和连接对象放入\n concurrentHashmap中
+B -> 控制端B : 打开
+控制端B -> netty客户端B : 随机生成客户端id
+netty客户端B -> 服务端: 注册客户端B
+== 客户端A控制客户端B ==
+
+控制端A -> netty客户端A :输入对方id
+netty客户端A -> 服务端 :发送控制对方请求,\n并且进入阻塞(countDownLatch.await())
+note left: netty本身是异步请求，无法马上\n得到响应结果因此在client模块里\n面有sync包用来控制发送线程同\n步得到响应
+activate netty客户端A
+服务端 --> netty客户端A : 对方不存在
+activate 服务端
+note right : 用对方id在注册的map去查找\n是否存在该连接,存在则将请\n求转发给对方
+note left : 发送消息线程在等待响应处于阻塞状态，\n需要设置响应结果并唤醒发送消息线程,\n(countDownLatch.countDown())
+服务端 -> netty客户端B : 发送控制请求
+activate netty客户端B
+netty客户端B --> 服务端 : success
+deactivate netty客户端B
+服务端 -->netty客户端A : success
+note left : 同样需要唤醒发送消息线程,和上面一样
+deactivate 服务端
+deactivate netty客户端A
+
+== 客户端B向客户端A发送屏幕截图 ==
+控制端B -> netty客户端B: 屏幕截图
+netty客户端B -> 服务端: 发送截图
+服务端 -> netty客户端A: 转发截图
+note right : 查找是否存在对方连接
+netty客户端A -> 控制端A :显示对方截图
+== 控制端A向控制端B发送鼠标和键盘命令 ==
+A -> 控制端A: 点击图片或者按下键盘
+控制端A -> netty客户端A :记录鼠标位置或按键字符
+netty客户端A -> 服务端: 发送控制消息
+服务端 -> netty客户端B: 转发控制消息
+note right : 读取消息内容并通过robot去控制本机
+@enduml
